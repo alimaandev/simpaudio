@@ -1,0 +1,29 @@
+# Virtual environment
+venv/
+
+# Build artifacts
+dist/
+build/
+*.spec
+installer/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Generated assets (keep wizard images, they're part of the installer)
+generate_assets.py
+package_portable.py
+
+# User settings
+*.simpaudio_settings.json
+.simpaudio_voices/
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
