@@ -6,6 +6,7 @@ dist/
 build/
 *.spec
 installer/
+Simpaudio_Portable.zip
 
 # Python cache
 __pycache__/

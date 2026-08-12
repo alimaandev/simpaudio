@@ -4,13 +4,13 @@
 
 #define MyAppName "Simpaudio"
 #define MyAppVersion "1.0.0"
-#define MyAppPublisher "Simpaudio"
-#define MyAppURL "https://github.com/yourusername/simpaudio"
+#define MyAppPublisher "alimaandev"
+#define MyAppURL "https://github.com/alimaandev/simpaudio"
 #define MyAppExeName "Simpaudio.exe"
-#define MyAppDescription "Offline Text-to-Speech Desktop Tool"
+#define MyAppDescription "Offline Text-to-Speech, Voice Blending, Audiobook Studio and Transcription"
 
 [Setup]
-AppId={{E8F9A0B1-C2D3-4E5F-6789-ABCDEF123456}
+AppId={{36F9DB2C-20E7-4D17-B8A1-B5DBE3144CA2}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 AppPublisher={#MyAppPublisher}
