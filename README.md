@@ -1,5 +1,9 @@
 # 🎙️ Simpaudio — The Free, Offline Voice Studio That Kills Your ElevenLabs Bill
 
+<p align="center">
+  <img src="assets/banner.png" alt="Simpaudio — Free Offline Voice Studio" width="640">
+</p>
+
 > **$22/month. For reading text out loud.**
 
 ElevenLabs gets you 30 minutes of voice a month for the price of a Netflix subscription — and *streams every word through their servers*. Simpaudio does the same job (and more) with **zero subscriptions, zero accounts, zero cloud, zero tracking** — completely free, forever, on your own PC.
