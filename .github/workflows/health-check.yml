@@ -1,0 +1,51 @@
+name: Health Check
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  health:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Run health check
+        id: check
+        continue-on-error: true
+        run: |
+          set +e
+          python scripts/health_check.py
+          code=$?
+          set -e
+          echo "exit=$code" >> "$GITHUB_OUTPUT"
+
+      - name: Commit health status
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add health/status.json
+          if git diff --cached --quiet; then
+            echo "No status change to commit"
+          else
+            status=$(python -c "import json; print(json.load(open('health/status.json'))['status'])")
+            timestamp=$(python -c "import json; print(json.load(open('health/status.json'))['timestamp'])")
+            git commit -m "health: $status @ $timestamp"
+            git push
+          fi
+
+      - name: Fail if unhealthy
+        if: steps.check.outputs.exit != '0'
+        run: exit 1
