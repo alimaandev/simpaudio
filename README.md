@@ -5,15 +5,7 @@
 # 🎙️ Simpaudio — The Free, Offline Voice Studio That Kills Your ElevenLabs Bill
 
 <p align="center">
-  <img src="assets/hero.jpg" alt="Simpaudio — Free Offline Voice Studio" width="640">
-</p>
-
-<p align="center">
-  <a href="assets/demo.mp4">
-    <img src="assets/banner.png" alt="Watch the Simpaudio demo video" width="640">
-  </a>
-  <br>
-  <em><a href="assets/demo.mp4">▶ Watch the demo video</a></em>
+https://github.com/user-attachments/assets/93810a63-4849-4a8b-8086-bdd72ba9fce9
 </p>
 
 > **$22/month. For reading text out loud.**
