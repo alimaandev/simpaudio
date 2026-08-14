@@ -5,10 +5,6 @@
 # 🎙️ Simpaudio — The Free, Offline Voice Studio That Kills Your ElevenLabs Bill
 
 <p align="center">
-  <img src="assets/hero.jpg" alt="Simpaudio — Free Offline Voice Studio" width="640">
-</p>
-
-<p align="center">
   <video src="assets/demo.mp4" controls="controls" width="640"></video>
 </p>
 
