@@ -9,7 +9,11 @@
 </p>
 
 <p align="center">
-  <video src="assets/demo.mp4" controls="controls" style="max-width: 100%;"></video>
+  <a href="assets/demo.mp4">
+    <img src="assets/banner.png" alt="Watch the Simpaudio demo video" width="640">
+  </a>
+  <br>
+  <em><a href="assets/demo.mp4">▶ Watch the demo video</a></em>
 </p>
 
 > **$22/month. For reading text out loud.**
