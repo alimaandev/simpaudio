@@ -1,6 +1,9 @@
 from .base import TTSBackend
 from .piper_engine import PiperBackend
 from .kokoro_engine import KokoroBackend
+from utils import configure_ffmpeg
+
+configure_ffmpeg()
 
 ENGINE_REGISTRY = {
     "Piper TTS": PiperBackend,

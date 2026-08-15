@@ -113,8 +113,7 @@ class App:
         self.status_label.grid(row=0, column=0, sticky="w")
 
     def update_status(self, message: str):
-        self.status_var.set(message)
-        self.root.update_idletasks()
+        self.root.after(0, lambda: self.status_var.set(message))
 
     def _on_engine_changed(self, *_args):
         self.engine_name = self.engine_var.get()

@@ -46,4 +46,11 @@ def main():
 
 
 if __name__ == "__main__":
+    if "--selftest" in sys.argv:
+        from pathlib import Path
+        from selftest import run_selftest
+        log_path = Path.cwd() / "selftest_results.log"
+        if "--selftest-log" in sys.argv:
+            log_path = Path(sys.argv[sys.argv.index("--selftest-log") + 1])
+        sys.exit(run_selftest(log_path))
     main()

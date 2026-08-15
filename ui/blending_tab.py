@@ -1,5 +1,7 @@
+import threading
 import tkinter as tk
-from tkinter import messagebox
+from pathlib import Path
+from tkinter import filedialog, messagebox
 
 import ttkbootstrap as ttk
 
@@ -124,13 +126,54 @@ class BlendingTab(ttk.Frame):
         if not self._blend:
             messagebox.showinfo("No Blend", "Add at least one voice to the blend first.")
             return
+        if self.engine is None:
+            messagebox.showwarning("No Engine", "Select an engine from the toolbar first.")
+            return
         voice_str = ",".join(self._blend)
-        self.status_callback(f"Blend string: {voice_str}")
-        messagebox.showinfo(
-            "Blend Ready",
-            f"Use this voice string in the TTS tab:\n\n{voice_str}\n\n"
-            f"Kokoro will average these voice packs.",
+        save_path = filedialog.asksaveasfilename(
+            title="Save Blend Test",
+            defaultextension=".wav",
+            filetypes=[("WAV audio", "*.wav"), ("MP3 audio", "*.mp3"), ("All files", "*.*")],
+            initialfile="blend_preview.wav",
         )
+        if not save_path:
+            return
+
+        self.status_callback(f"Generating blend: {voice_str}")
+        for item in self.blend_tree.get_children():
+            self.blend_tree.item(item, values=(self.blend_tree.item(item, "values")[0], "generating"))
+        threading.Thread(
+            target=self._generate_blend, args=(voice_str, Path(save_path)), daemon=True,
+        ).start()
+
+    def _generate_blend(self, voice_str: str, save_path: Path):
+        try:
+            text = "This is a preview of the blended voice."
+            result = self.engine.generate(
+                text=text, voice=voice_str,
+                speed=1.0, volume=1.0,
+                output_path=save_path,
+                status_callback=self.status_callback,
+            )
+            self.after(0, lambda: self._blend_done(True, result))
+        except Exception as exc:
+            self.after(0, lambda: self._blend_done(False, str(exc)))
+
+    def _blend_done(self, ok: bool, result):
+        for item in self.blend_tree.get_children():
+            vals = self.blend_tree.item(item, "values")
+            if len(vals) > 1 and vals[1] == "generating":
+                self.blend_tree.item(item, values=(vals[0],))
+        if not ok:
+            messagebox.showerror("Blend Error", f"Could not generate blend:\n{result}")
+            return
+        try:
+            import winsound
+            winsound.PlaySound(str(result), winsound.SND_FILENAME | winsound.SND_ASYNC)
+        except Exception:
+            pass
+        self.status_callback(f"Blend saved: {result}")
+        messagebox.showinfo("Blend Ready", f"Blend audio saved:\n{result}")
 
     def _save_blend_preset(self):
         name = self.preset_name.get().strip()

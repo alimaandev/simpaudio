@@ -124,8 +124,10 @@ class STTTab(ttk.Frame):
                 h, m = divmod(m, 60)
                 stamp = f"{h:02d}:{m:02d}:{s:02d}"
                 lines.append(f"[{stamp}] {seg.text.strip()}")
+            self._segments = segments
             self.after(0, lambda: self._display_result("\n".join(lines)))
         except Exception as e:
+            self._segments = []
             self.after(0, lambda: self._error(str(e)))
 
     def _display_result(self, text: str):
@@ -176,6 +178,12 @@ class STTTab(ttk.Frame):
         )
         if path:
             lines = []
+            segs = getattr(self, "_segments", None)
+            if segs:
+                from srt_exporter import export_srt
+                export_srt([{"text": s.text.strip(), "start": s.start, "end": s.end} for s in segs], Path(path))
+                self.status_callback(f"Saved: {path}")
+                return
             for i, line in enumerate(text.split("\n"), 1):
                 if line.strip():
                     stamp, _, content = line.partition(" ")

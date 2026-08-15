@@ -37,7 +37,7 @@ class TTSTab(ttk.Frame):
     def _create_variables(self):
         self.language_var = tk.StringVar(value=self.config.last_language)
         self.voice_var = tk.StringVar(value=self.config.last_voice)
-        self.format_var = tk.StringVar(value="WAV")
+        self.format_var = tk.StringVar(value=self.config.last_format)
         self.speed_var = tk.DoubleVar(value=self.config.speed)
         self.volume_var = tk.DoubleVar(value=self.config.volume)
         self.ssml_mode = tk.BooleanVar(value=False)
@@ -75,7 +75,9 @@ class TTSTab(ttk.Frame):
 
     def load_preset(self, preset: dict):
         if "voice" in preset:
-            self.voice_var.set(preset["voice"])
+            voices = self._get_voices_for_language(self.language_var.get())
+            if not voices or preset["voice"] in voices:
+                self.voice_var.set(preset["voice"])
         if "speed" in preset:
             self.speed_var.set(preset["speed"])
         if "volume" in preset:
@@ -316,7 +318,7 @@ class TTSTab(ttk.Frame):
                 status_callback=self._update_status,
             )
 
-            self._generated_wav = result if result.suffix == ".wav" else result
+            self._generated_wav = self._make_preview_wav(result)
 
             if self.export_srt.get():
                 segments = self.engine.get_last_segments()
@@ -327,6 +329,19 @@ class TTSTab(ttk.Frame):
             self.after(0, self._generation_finished)
         except Exception as exc:
             self.after(0, lambda e=exc: self._generation_error(str(e)))
+
+    def _make_preview_wav(self, path: Path) -> Path:
+        if path.suffix.lower() == ".wav":
+            return path
+        try:
+            from pydub import AudioSegment
+            from utils import configure_ffmpeg
+            configure_ffmpeg()
+            preview = Path(self.config.last_folder or Path.home()) / ".simpaudio_preview.wav"
+            AudioSegment.from_mp3(str(path)).export(str(preview), format="wav")
+            return preview
+        except Exception:
+            return path
 
     def _preview_audio(self):
         path = self._generated_wav
@@ -364,6 +379,7 @@ class TTSTab(ttk.Frame):
         self.config.last_voice = self.voice_var.get()
         self.config.speed = self.speed_var.get()
         self.config.volume = self.volume_var.get()
+        self.config.last_format = self.format_var.get()
 
     def load_state(self):
         self.language_var.set(self.config.last_language)

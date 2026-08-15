@@ -1,3 +1,5 @@
+import os
+import sys
 from pathlib import Path
 from typing import List, Optional
 
@@ -7,6 +9,45 @@ import soundfile as sf
 
 from .base import TTSBackend
 from utils import LANGUAGES
+
+
+def _espeak_ng_dir() -> Path:
+    if getattr(sys, "frozen", False):
+        base = Path(getattr(sys, "_MEIPASS", Path(sys.executable).parent))
+        return base / "espeak-ng"
+    return Path(__file__).resolve().parent.parent / "assets" / "espeak-ng"
+
+
+def _setup_espeak_ng() -> None:
+    espeak_dir = _espeak_ng_dir()
+    library = espeak_dir / "espeak-ng.dll"
+    data = espeak_dir / "espeak-ng-data"
+    if library.is_file():
+        os.environ["PHONEMIZER_ESPEAK_LIBRARY"] = str(library)
+    if data.is_dir():
+        os.environ["ESPEAK_DATA_PATH"] = str(data)
+
+
+def _patch_misaki_fallback() -> None:
+    if getattr(_patch_misaki_fallback, "_done", False):
+        return
+    _patch_misaki_fallback._done = True
+    from misaki import en
+    from misaki.espeak import EspeakFallback
+
+    original_init = en.G2P.__init__
+
+    def init(self, *args, **kwargs):
+        if kwargs.get("fallback") is True:
+            british = kwargs.get("british", args[1] if len(args) > 1 else False)
+            kwargs["fallback"] = EspeakFallback(british)
+        original_init(self, *args, **kwargs)
+
+    en.G2P.__init__ = init
+
+
+_setup_espeak_ng()
+_patch_misaki_fallback()
 
 
 class KokoroBackend(TTSBackend):
@@ -45,7 +86,7 @@ class KokoroBackend(TTSBackend):
         self._last_segments = []
         sample_rate = 24000
 
-        for result in pipeline(text, voice=voice, speed=speed):
+        for result in pipeline(text, voice=voice, speed=speed, model=self._model):
             if result.audio is not None:
                 audio = result.audio.cpu().numpy()
                 audio = audio * volume
