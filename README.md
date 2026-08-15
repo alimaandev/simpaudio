@@ -102,6 +102,16 @@ venv\Scripts\pip install -r requirements.txt
 python app.py
 ```
 
+## 📢 Report a Problem
+
+Something broke or behaves oddly? Found a missing voice, a crash, or a wrong subtitle timestamp? Open an issue on GitHub — bug reports are the fastest way to get things fixed.
+
+- **Report a bug:** https://github.com/alimaandev/simpaudio/issues/new?template=bug_report.yml
+- **Suggest a feature:** https://github.com/alimaandev/simpaudio/issues/new?template=feature_request.yml
+- **All issues:** https://github.com/alimaandev/simpaudio/issues
+
+**Before reporting:** check that a similar issue isn't already open, and mention which version you run (Installer, Portable, or from source) plus your Windows version. A screenshot or the exact error text helps a lot.
+
 ## 📜 License
 
 [MIT](LICENSE). Use it, fork it, ship it — just keep the copyright line. Star it if it saves you $264/year — that's *our* only pricing plan. ⭐

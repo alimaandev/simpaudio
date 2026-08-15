@@ -1,0 +1,29 @@
+name: Feature request
+description: Suggest an idea or improvement for Simpaudio
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Suggest a feature or improvement. Be specific about what you want and why.
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would you like?
+      description: Describe the feature or improvement.
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why is it useful?
+      description: What problem does it solve or what would it let you do?
+    validations:
+      required: true
+  - type: textarea
+    id: extra
+    attributes:
+      label: Anything else?
+      description: Examples, mockups, links - anything that helps understand the idea.
+    validations:
+      required: false

@@ -1,0 +1,73 @@
+name: Bug report
+description: Report a problem or error you ran into
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting. Fill in as much as you can - it helps me find and fix the problem faster.
+  - type: dropdown
+    id: version
+    attributes:
+      label: How are you running Simpaudio?
+      description: Select the closest match.
+      options:
+        - Installed app (Simpaudio_Setup_1.0.0.exe)
+        - Portable version (Simpaudio_Portable.zip)
+        - Running from source (Python)
+      default: 0
+    validations:
+      required: true
+  - type: dropdown
+    id: feature
+    attributes:
+      label: Which feature was affected?
+      description: Select the closest match.
+      options:
+        - Text-to-Speech (Piper)
+        - Text-to-Speech (Kokoro)
+        - Voice blending
+        - Speech-to-Text (Whisper)
+        - SRT subtitle export
+        - Audio preview / MP3 export
+        - Book / PDF import
+        - Presets or settings
+        - Other
+      default: 0
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: What did you do, and what went wrong? Paste any error message you saw.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect to happen?
+    validations:
+      required: false
+  - type: input
+    id: os
+    attributes:
+      label: Operating system
+      description: e.g. Windows 10 22H2, Windows 11
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: "Step by step so I can reproduce it: 1. Open the app 2. ..."
+      placeholder: "1. \n2. \n3. "
+    validations:
+      required: false
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Checklist
+      options:
+        - label: I checked that a similar issue is not already reported
+          required: true
