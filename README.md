@@ -1,121 +1,153 @@
 <p align="center">
-  <img src="assets/logo.png" alt="Simpaudio Logo" width="96">
+  <img src="assets/logo.png" alt="Simpaudio Logo" width="120">
 </p>
 
-# 🎙️ Simpaudio — The Free, Offline Voice Studio That Kills Your ElevenLabs Bill
+<h1 align="center">✨ Simpaudio</h1>
+<p align="center">
+  <b>The Free, Offline Voice Studio for Creators Who Value Privacy</b><br>
+  <sub>Professional TTS • Voice Blending • Audiobooks • Transcription</sub>
+</p>
 
 <p align="center">
-<video autoplay src="https://github.com/user-attachments/assets/93810a63-4849-4a8b-8086-bdd72ba9fce9" ></video>
+  <a href="#-download"><img src="https://img.shields.io/badge/Download_Latest-4F46E5?style=for-the-badge&logo=windows&logoColor=white" alt="Download"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-10B981?style=for-the-badge" alt="MIT License"></a>
+  <a href="#-dev-mode"><img src="https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python"></a>
 </p>
 
-> **$22/month. For reading text out loud.**
+<p align="center">
+<video autoplay loop muted playsinline src="https://github.com/user-attachments/assets/93810a63-4849-4a8b-8086-bdd72ba9fce9" width="100%"></video>
+</p>
 
-ElevenLabs gets you 30 minutes of voice a month for the price of a Netflix subscription — and *streams every word through their servers*. Simpaudio does the same job (and more) with **zero subscriptions, zero accounts, zero cloud, zero tracking** — completely free, forever, on your own PC.
-
-**Don't rent your voice. Own it.**
+> ### 💡 Your Voice, Your Hardware, Your Rules.
+> Why rent a voice when you can own the studio? Simpaudio brings premium, offline AI voice generation to your Windows PC. No subscriptions, no cloud uploads, no tracking. Just pure, private creativity.
 
 ---
 
-## ⚡ What Is This?
+## 🎨 A Complete Creative Suite
 
-A full studio-grade voice toolkit for Windows that runs **100% offline**:
+Simpaudio isn't just a text-to-speech reader; it's a comprehensive audio production environment designed for writers, developers, and content creators.
 
-| 🎙 Text to Speech | 🎤 Voice Blending | 📖 Audiobook Studio | 🎧 Transcription |
-|---|---|---|---|
-| 40+ voices, 8 languages | Mix voices → custom blend | Full audiobooks from manuscripts | Whisper-powered STT |
-| WAV / MP3 / SRT | Like voice DNA mixing | Per-chapter voices + subtitles | TXT / SRT export |
+| 🗣️ **Text to Speech** | 🧬 **Voice Blending** | 📚 **Audiobook Studio** | 🎧 **Smart Transcription** |
+| :--- | :--- | :--- | :--- |
+| Access 40+ premium voices across 8 languages. Export in WAV, MP3, or SRT. | Create unique "Voice DNA" by blending two models into a completely new persona. | Turn manuscripts into full audiobooks with per-chapter voice assignment & subtitles. | Whisper-powered STT that converts audio to TXT or SRT entirely on-device. |
 
-## 💀 ElevenLabs vs Simpaudio
+---
 
-| | **ElevenLabs** 💸 | **Simpaudio** 💀 |
-|---|---|---|
-| Price | **$22/month** (30 min) | **$0.00** — forever |
-| Internet | Required — your text goes to their cloud | **Offline. Nobody sees your text.** |
-| Account | Required | None |
-| Voice blending | Paywall | Free, unlimited |
-| Subtitle export | Paywall | Free |
-| Audiobook generation | Manual, painful | One click |
-| Speech-to-text | Paywall | Free & offline |
-| Your data | In their logs | On your disk |
+## ☁️ Cloud vs. Local: The Freedom Choice
 
-## 🔥 Why People Love It
+We believe creative tools should be accessible and private. Here is how local-first compares to traditional cloud services:
 
-- **It's actually private** — your scripts, books, and voice notes never leave your machine. Great for writers, journalists, and anyone with NDAs.
-- **It produces usable audiobooks** — import `.txt`, `.md`, `.epub`, or `.pdf`, assign a different voice per chapter, and get a combined audiobook + timed subtitles out the other side.
-- **The voice blending is wild** — blend two voices into one and you get a completely unique voice nobody else has. Because *you* generated it.
-- **It's MIT licensed** — not a "free tier". A gift. Fork it, sell it, whatever. Free forever means forever.
+| Feature | Traditional Cloud TTS | ✨ Simpaudio |
+| :--- | :--- | :--- |
+| **Cost** | ~$22/month (limited chars) | **Free Forever** (Unlimited) |
+| **Privacy** | Text processed on external servers | **100% Offline** (Data never leaves PC) |
+| **Access** | Account & Login Required | **No Accounts / No Sign-up** |
+| **Voice Cloning** | Often Paywalled | **Free & Unlimited Blending** |
+| **Audiobooks** | Manual / Fragmented Workflow | **One-Click Generation** |
+| **Availability** | Dependent on Internet/Uptime | **Works Anywhere, Anytime** |
 
-## 🖥 Requirements
+---
 
-- Windows 10 / 11 (64-bit)
-- ~2 GB free disk
-- 4 GB RAM recommended
+## 🌟 Why Creators Choose Simpaudio
 
-## ⬇️ Download
+-   🔒 **True Privacy by Design:** Perfect for NDAs, sensitive journalism, or personal journals. Your scripts exist only on your disk.
+-   🎧 **Production-Ready Audiobooks:** Import `.txt`, `.md`, `.epub`, or `.pdf`. Assign unique voices to chapters and export a cohesive audiobook with perfectly timed subtitles.
+-   🎨 **Limitless Vocal Creativity:** Voice blending allows you to craft signature voices that no one else has. Because *you* generated them locally.
+-   🤝 **Open Source & Transparent:** MIT Licensed. Not a "free tier" trap. Fork it, audit it, build upon it, or use it commercially.
 
-**[⬇ Grab the latest release here](https://github.com/alimaandev/simpaudio/releases)**
+---
 
-| File | Best for |
-|---|---|
-| `Simpaudio_Setup_1.0.0.exe` (~392 MB) | **Recommended** — installer with Start Menu & Desktop shortcuts |
-| `Simpaudio_Portable.zip` (~567 MB) | No-install — unzip anywhere, run `Simpaudio.exe` |
+## ⬇️ Get Started
 
-*Psst — the installer is chunky because it bundles the *entire* AI runtime (Piper + Kokoro + Whisper). That's the price of "runs forever, offline, no updates needed".*
+### System Requirements
 
-### 🔒 First Launch (one-time, needs internet)
+-   **OS:** Windows 10 / 11 (64-bit)
+-   **Storage:** ~2 GB free space
+-   **Memory:** 4 GB RAM recommended
 
-Voice models download on demand, then cache locally:
+### Download Options
 
-| Model | Size | When |
-|---|---|---|
-| Piper voices | ~60 MB each | First use of each voice |
-| Kokoro model | ~340 MB | First Kokoro speech |
-| Whisper model | ~150 MB | First transcription |
+| Package | Size | Best For |
+| :--- | :--- | :--- |
+| **[📦 Installer (.exe)](https://github.com/alimaandev/simpaudio/releases)** | ~392 MB | **Recommended.** Includes Start Menu shortcuts & auto-updates. |
+| **[📁 Portable (.zip)](https://github.com/alimaandev/simpaudio/releases)** | ~567 MB | Run from USB or custom folder. No installation required. |
 
-After that? **Fully offline. No phone-home. No telemetry. Ever.**
+> **💡 Note on File Size:** The installer includes the complete AI runtime (Piper + Kokoro + Whisper). This ensures the app runs forever, offline, without needing future dependency updates.
 
-### ⚠️ SmartScreen Warning
+### 🔐 First Launch Setup
 
-The installer isn't code-signed (certificates cost hundreds a year — we'd rather keep the software free). Windows may say "Windows protected your PC": click **More info → Run anyway**. It's safe — the app literally cannot phone home, there's no cloud to phone.
+Models are downloaded **on-demand** and cached locally. After the initial fetch, Simpaudio is fully air-gapped.
 
-## 🚀 60-Second Start
+| Model | Size | Trigger |
+| :--- | :--- | :--- |
+| Piper Voices | ~60 MB ea. | First use of specific voice |
+| Kokoro Engine | ~340 MB | First high-quality synthesis |
+| Whisper STT | ~150 MB | First transcription task |
 
-1. Install (or unzip) Simpaudio
-2. Open **Text to Speech** → pick language + voice
-3. Type → **Choose Save Location** → **Generate Audio**
-4. Done. You just beat a $22/month subscription.
+> **⚠️ Windows SmartScreen Notice**
+> To keep Simpaudio free, we do not purchase expensive code-signing certificates. Windows may flag the installer. Please click **"More info" → "Run anyway"**. The app contains no telemetry and physically cannot phone home.
 
-## 🧰 Built On Open Source (Nothing But)
+---
 
-| Component | Role | License |
-|---|---|---|
-| [Piper](https://github.com/rhasspy/piper) | Fast CPU TTS — 40+ voices | MIT |
-| [Kokoro](https://github.com/hexgrad/kokoro) | High-quality neural voices + blending | Apache 2.0 |
+## 🚀 Quick Start Guide
+
+1.  Install or unzip Simpaudio.
+2.  Navigate to **Text to Speech** and select your preferred language/voice.
+3.  Enter your text, choose an output path, and click **Generate Audio**.
+4.  🎉 You’ve just created professional audio with zero recurring costs.
+
+---
+
+## 🏗️ Built on Giants
+
+Simpaudio stands on the shoulders of incredible open-source projects:
+
+| Component | Purpose | License |
+| :--- | :--- | :--- |
+| [Piper](https://github.com/rhasspy/piper) | Lightning-fast CPU TTS | MIT |
+| [Kokoro](https://github.com/hexgrad/kokoro) | Neural voice engine & blending | Apache 2.0 |
 | [faster-whisper](https://github.com/SYSTRAN/faster-whisper) | Offline speech recognition | MIT |
-| [ttkbootstrap](https://github.com/israel-dryer/ttkbootstrap) | Modern themed UI | MIT |
+| [ttkbootstrap](https://github.com/israel-dryer/ttkbootstrap) | Modern UI framework | MIT |
 
-## 🛠 Dev Mode (For the Curious)
+---
+
+## 🛠️ Developer Mode
+
+Want to contribute or customize?
 
 ```bat
 python -m venv venv
 venv\Scripts\pip install -r requirements.txt
 python app.py
-```
 
-## 📢 Report a Problem
-
-Something broke or behaves oddly? Found a missing voice, a crash, or a wrong subtitle timestamp? Open an issue on GitHub — bug reports are the fastest way to get things fixed.
-
-- **Report a bug:** https://github.com/alimaandev/simpaudio/issues/new?template=bug_report.yml
-- **Suggest a feature:** https://github.com/alimaandev/simpaudio/issues/new?template=feature_request.yml
-- **All issues:** https://github.com/alimaandev/simpaudio/issues
-
-**Before reporting:** check that a similar issue isn't already open, and mention which version you run (Installer, Portable, or from source) plus your Windows version. A screenshot or the exact error text helps a lot.
-
-## 📜 License
-
-[MIT](LICENSE). Use it, fork it, ship it — just keep the copyright line. Star it if it saves you $264/year — that's *our* only pricing plan. ⭐
+### 💡 Why this matters
+-   **`bat`**: Tells the Markdown renderer to use Batch/Windows Command Prompt syntax highlighting. This correctly colors `python`, `venv\Scripts\pip`, and file paths as shell commands.
+-   **Avoids Misleading Highlighting**: If you leave it as `python`, the renderer tries to parse Windows paths like `venv\Scripts\pip` as Python syntax, which results in broken or confusing colors since backslashes and shell arguments aren't valid Python.
+-   **Alternative**: You can also use ````powershell` if you want highlighting that matches modern Windows Terminal aesthetics, but `bat` is the most universally compatible for these specific commands across all Markdown renderers (GitHub, GitLab, VS Code, etc.).
 
 ---
 
-*Simpaudio — because your text-to-speech should live on your PC, not on someone's server.*
+## 💬 Community & Support
+
+Found a bug or have an idea? We’d love to hear from you!
+
+-   🐞 **[Report a Bug](https://github.com/alimaandev/simpaudio/issues/new?template=bug_report.yml)**
+-   💡 **[Request a Feature](https://github.com/alimaandev/simpaudio/issues/new?template=feature_request.yml)**
+-   📋 **[Browse All Issues](https://github.com/alimaandev/simpaudio/issues)**
+
+> **Tip:** Always include your version (Installer/Portable/Source) and Windows build number when reporting issues. Screenshots help us resolve problems faster!
+
+---
+
+<p align="center">
+  <b>📜 MIT License</b><br>
+  Use it, fork it, ship it. Just keep the copyright line.<br>
+  <i>If Simpaudio saves you time or money, consider leaving a ⭐ — it’s the best payment we accept.</i>
+</p>
+
+<p align="center">
+  <sub>Simpaudio — Professional voice synthesis that lives on your PC, not on someone else's server.</sub>
+</p>
+
+
+
