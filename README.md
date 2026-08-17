@@ -119,6 +119,7 @@ Want to contribute or customize?
 python -m venv venv
 venv\Scripts\pip install -r requirements.txt
 python app.py
+```
 
 ### 💡 Why this matters
 -   **`bat`**: Tells the Markdown renderer to use Batch/Windows Command Prompt syntax highlighting. This correctly colors `python`, `venv\Scripts\pip`, and file paths as shell commands.
