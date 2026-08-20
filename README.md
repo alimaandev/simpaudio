@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/logo.png" alt="Simpaudio" width="140" style="filter: drop-shadow(0 10px 30px rgba(79, 70, 229, 0.3));">
+  <img src="assets/logo.png" alt="Simpaudio logo — free offline text-to-speech voice studio for Windows" width="140" style="filter: drop-shadow(0 10px 30px rgba(79, 70, 229, 0.3));">
 </p>
 
 <h1 align="center">
@@ -16,6 +16,26 @@
   <a href="#download-now" style="display: inline-block; padding: 12px 28px; background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%); color: white; border-radius: 8px; text-decoration: none; font-weight: 700; margin: 0 8px; box-shadow: 0 10px 25px rgba(79, 70, 229, 0.3);">⬇️ Download Free</a>
   <a href="https://github.com/alimaandev/simpaudio/stargazers" style="display: inline-block; padding: 12px 28px; border: 2px solid #4F46E5; color: #4F46E5; border-radius: 8px; text-decoration: none; font-weight: 700; margin: 0 8px;">⭐ Star Us</a>
 </p>
+
+**Simpaudio** is a **free, open-source, offline text-to-speech (TTS) voice studio for Windows**. It turns text into natural, studio-quality speech in **8 languages with 40+ realistic voices** — powered entirely by **Piper TTS** and **Kokoro TTS** running locally on your PC. No cloud, no accounts, no subscriptions: it is the **private ElevenLabs alternative** that keeps your audio on your machine.
+
+Beyond plain text-to-speech, Simpaudio includes **voice blending** (create a unique voice by mixing two others), **audiobook generation** from PDF/EPUB/TXT files, **Whisper speech-to-text**, a **visual SSML editor**, and **SRT subtitle export** — all free forever under the **MIT license**.
+
+---
+
+## 📑 **Table of Contents**
+
+- [Why Simpaudio Wins](#-why-simpaudio-wins)
+- [Powerful Features](#-powerful-features-zero-friction)
+- [The Numbers Say It All](#-the-numbers-say-it-all)
+- [Built for Creators](#-built-for-creators)
+- [The Open Source Difference](#-the-open-source-difference)
+- [Getting Started in 60 Seconds](#-getting-started-in-60-seconds)
+- [Real-World Examples](#-real-world-examples)
+- [Made by Developers, For Developers](#-made-by-developers-for-developers)
+- [Community & Support](#-community--support)
+- [FAQ](#-faq)
+- [License & Legal](#-license--legal)
 
 ---
 
@@ -176,7 +196,6 @@ Models download on-demand and cache locally. After first use, Simpaudio runs com
 
 ---
 
-<<<<<<< HEAD
 ## 💡 **Real-World Examples**
 
 <div style="background: linear-gradient(135deg, #F9FAFB 0%, #F3F4F6 100%); border-radius: 12px; padding: 30px; margin: 30px 0;">
@@ -209,14 +228,17 @@ Models download on-demand and cache locally. After first use, Simpaudio runs com
 ## 🛠️ **Made by Developers, For Developers**
 
 ```python
-# It's this simple
-from simpaudio import TextToSpeech
+# Real example: synthesize speech with the built-in Piper engine
+from engines import create_engine
 
-tts = TextToSpeech()
-tts.synthesize(
+tts = create_engine("Piper TTS")
+tts.generate(
     text="Welcome to Simpaudio",
     voice="en_US-libritts-high",
-    output_path="audio.wav"
+    speed=1.0,
+    pitch=1.0,
+    output_path="audio.wav",
+    status_callback=print,
 )
 ```
 
@@ -238,6 +260,40 @@ Have ideas? Found a bug? We're all ears.
 - 💬 **[Discussions](https://github.com/alimaandev/simpaudio/discussions)**
 - ⭐ **[Star the Repo](https://github.com/alimaandev/simpaudio)**
 - 🤝 **[Contribute](CONTRIBUTING.md)**
+
+---
+
+## ❓ **FAQ**
+
+### Is Simpaudio really free?
+Yes. Simpaudio is **100% free forever** with no paid tiers, no trial periods, and no hidden limits. It is open source under the **MIT license**.
+
+### Does Simpaudio work offline?
+Yes. After a **one-time model download** on first use, Simpaudio runs **completely offline**. All text-to-speech, voice blending and speech-to-text happen on your PC.
+
+### Is my audio or text uploaded anywhere?
+**No.** Simpaudio has no cloud component. Your text, your voice models and your generated audio never leave your computer. This is the key difference from cloud TTS services like ElevenLabs.
+
+### Can I use Simpaudio commercially?
+Yes. The **MIT license** allows personal, commercial and enterprise use, including in products you sell — you only need to keep the copyright notice.
+
+### What is voice blending?
+Voice blending mixes two voice models (for example `af_heart,af_bella`) into one **unique synthetic voice**. It is built in and free, unlike cloud services that charge extra for custom voices.
+
+### Which languages are supported?
+Simpaudio supports **8 languages**: English, Spanish, French, Hindi, Italian, Japanese, Portuguese and Mandarin Chinese, across **40+ Piper voices** plus the Kokoro neural voices.
+
+### What can I export?
+You can export audio as **WAV or MP3**, and subtitles as **SRT** with real word timestamps — ideal for YouTube captions, podcasts and audiobooks.
+
+### How much disk space do I need?
+About **2 GB free** is recommended. Models download on demand and are cached locally; Piper voices are roughly 60 MB each.
+
+### Does Simpaudio work on Mac or Linux?
+Currently Simpaudio targets **Windows 10/11 (64-bit)**. The underlying engines are cross-platform, so a Linux/macOS port is a welcome contribution.
+
+### How do I report a bug or suggest a feature?
+Use the **[bug report form](https://github.com/alimaandev/simpaudio/issues/new?template=bug_report.yml)** or the **[feature request form](https://github.com/alimaandev/simpaudio/issues/new?template=feature_request.yml)**. Include your version and Windows version to help us fix it faster.
 
 ---
 
