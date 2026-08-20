@@ -176,6 +176,7 @@ Models download on-demand and cache locally. After first use, Simpaudio runs com
 
 ---
 
+<<<<<<< HEAD
 ## 💡 **Real-World Examples**
 
 <div style="background: linear-gradient(135deg, #F9FAFB 0%, #F3F4F6 100%); border-radius: 12px; padding: 30px; margin: 30px 0;">
@@ -232,7 +233,8 @@ tts.synthesize(
 
 Have ideas? Found a bug? We're all ears.
 
-- 🐛 **[Report Issues](https://github.com/alimaandev/simpaudio/issues)**
+- 🐛 **[Report a Bug](https://github.com/alimaandev/simpaudio/issues/new?template=bug_report.yml)** — use the guided form (version, feature, error text)
+- 💡 **[Suggest a Feature](https://github.com/alimaandev/simpaudio/issues/new?template=feature_request.yml)**
 - 💬 **[Discussions](https://github.com/alimaandev/simpaudio/discussions)**
 - ⭐ **[Star the Repo](https://github.com/alimaandev/simpaudio)**
 - 🤝 **[Contribute](CONTRIBUTING.md)**
@@ -265,3 +267,8 @@ Have ideas? Found a bug? We're all ears.
 <p align="center">
   <sub>If Simpaudio saved you time or money, consider leaving a ⭐ — it's the fuel that keeps us building.</sub>
 </p>
+
+---
+
+**Project docs:** [Changelog](CHANGELOG.md) · [Contributing](CONTRIBUTING.md) · [Code of Conduct](CODE_OF_CONDUCT.md) · [Security](SECURITY.md) · [License](LICENSE)
+
