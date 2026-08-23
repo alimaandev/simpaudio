@@ -8,6 +8,8 @@ import ttkbootstrap as ttk
 from utils import LANGUAGES, SORTED_LANGUAGES
 from voice_presets import save_preset, list_presets
 
+from ui.i18n import t
+
 
 class BlendingTab(ttk.Frame):
     def __init__(self, master, status_callback, **kwargs):
@@ -27,12 +29,12 @@ class BlendingTab(ttk.Frame):
         self._create_save_section()
 
     def _create_pick_section(self):
-        frame = ttk.LabelFrame(self, text="Add Voices", padding=(12, 8, 12, 8))
+        frame = ttk.LabelFrame(self, text=t("add_voices"), padding=(12, 8, 12, 8))
         frame.grid(row=0, column=0, sticky="ew", padx=12, pady=(12, 4))
         frame.columnconfigure(1, weight=1)
         frame.columnconfigure(3, weight=1)
 
-        ttk.Label(frame, text="Language:").grid(row=0, column=0, padx=(0, 4), pady=4, sticky="w")
+        ttk.Label(frame, text=t("language")).grid(row=0, column=0, padx=(0, 4), pady=4, sticky="w")
         self.lang_var = tk.StringVar(value=SORTED_LANGUAGES[0])
         ttk.Combobox(
             frame, textvariable=self.lang_var,
@@ -40,7 +42,7 @@ class BlendingTab(ttk.Frame):
         ).grid(row=0, column=1, padx=(0, 12), pady=4, sticky="w")
         self.lang_var.trace_add("write", self._on_lang_changed)
 
-        ttk.Label(frame, text="Voice:").grid(row=0, column=2, padx=(0, 4), pady=4, sticky="w")
+        ttk.Label(frame, text=t("voice")).grid(row=0, column=2, padx=(0, 4), pady=4, sticky="w")
         self.voice_var = tk.StringVar()
         self.voice_menu = ttk.Combobox(
             frame, textvariable=self.voice_var,
@@ -48,19 +50,17 @@ class BlendingTab(ttk.Frame):
         )
         self.voice_menu.grid(row=0, column=3, padx=(0, 8), pady=4, sticky="w")
 
-        ttk.Button(frame, text="Add to Blend", command=self._add_to_blend).grid(
-            row=0, column=4, pady=4, sticky="e"
-        )
+        ttk.Button(frame, text=t("add_to_blend"), command=self._add_to_blend).grid(row=0, column=4, pady=4, sticky="e")
 
     def _create_blend_section(self):
-        frame = ttk.LabelFrame(self, text="Current Blend", padding=(12, 8, 12, 8))
+        frame = ttk.LabelFrame(self, text=t("current_blend"), padding=(12, 8, 12, 8))
         frame.grid(row=2, column=0, sticky="nsew", padx=12, pady=4)
         frame.columnconfigure(0, weight=1)
         frame.rowconfigure(0, weight=1)
 
         columns = ("voice",)
         self.blend_tree = ttk.Treeview(frame, columns=columns, show="headings", height=6)
-        self.blend_tree.heading("voice", text="Voices in blend")
+        self.blend_tree.heading("voice", text=t("voices_in_blend"))
         self.blend_tree.column("voice", width=350)
         self.blend_tree.grid(row=0, column=0, sticky="nsew")
 
@@ -70,23 +70,19 @@ class BlendingTab(ttk.Frame):
 
         btn_frame = ttk.Frame(frame)
         btn_frame.grid(row=1, column=0, columnspan=2, sticky="ew", pady=(8, 0))
-        ttk.Button(btn_frame, text="Remove Selected", command=self._remove_selected).pack(side="left", padx=(0, 8))
-        ttk.Button(btn_frame, text="Clear All", command=self._clear_blend).pack(side="left", padx=(0, 8))
-        ttk.Button(btn_frame, text="Test Play", command=self._test_blend).pack(side="left")
+        ttk.Button(btn_frame, text=t("remove_selected"), command=self._remove_selected).pack(side="left", padx=(0, 8))
+        ttk.Button(btn_frame, text=t("clear_all"), command=self._clear_blend).pack(side="left", padx=(0, 8))
+        ttk.Button(btn_frame, text=t("test_play"), command=self._test_blend).pack(side="left")
 
     def _create_save_section(self):
         frame = ttk.Frame(self, padding=(12, 4, 12, 12))
         frame.grid(row=3, column=0, sticky="ew")
         frame.columnconfigure(1, weight=1)
 
-        ttk.Label(frame, text="Preset Name:").grid(row=0, column=0, padx=(0, 4), pady=4, sticky="w")
+        ttk.Label(frame, text=t("preset_name")).grid(row=0, column=0, padx=(0, 4), pady=4, sticky="w")
         self.preset_name = tk.StringVar()
-        ttk.Entry(frame, textvariable=self.preset_name, width=30).grid(
-            row=0, column=1, padx=(0, 8), pady=4, sticky="w"
-        )
-        ttk.Button(frame, text="Save Blend as Preset", command=self._save_blend_preset).grid(
-            row=0, column=2, pady=4, sticky="w"
-        )
+        ttk.Entry(frame, textvariable=self.preset_name, width=30).grid(row=0, column=1, padx=(0, 8), pady=4, sticky="w")
+        ttk.Button(frame, text=t("save_blend_as_preset"), command=self._save_blend_preset).grid(row=0, column=2, pady=4, sticky="w")
 
     def set_engine(self, engine):
         self.engine = engine
@@ -107,7 +103,7 @@ class BlendingTab(ttk.Frame):
             return
         self._blend.append(voice)
         self.blend_tree.insert("", "end", values=(voice,))
-        self.status_callback(f"Added: {voice}")
+        self.status_callback(t("added_voice_status", voice=voice))
 
     def _remove_selected(self):
         selected = self.blend_tree.selection()
@@ -124,14 +120,14 @@ class BlendingTab(ttk.Frame):
 
     def _test_blend(self):
         if not self._blend:
-            messagebox.showinfo("No Blend", "Add at least one voice to the blend first.")
+            messagebox.showinfo(t("no_blend_title"), t("no_blend_msg"))
             return
         if self.engine is None:
-            messagebox.showwarning("No Engine", "Select an engine from the toolbar first.")
+            messagebox.showwarning(t("no_engine_title"), t("no_engine_msg"))
             return
         voice_str = ",".join(self._blend)
         save_path = filedialog.asksaveasfilename(
-            title="Save Blend Test",
+            title=t("save_blend_test_title"),
             defaultextension=".wav",
             filetypes=[("WAV audio", "*.wav"), ("MP3 audio", "*.mp3"), ("All files", "*.*")],
             initialfile="blend_preview.wav",
@@ -139,7 +135,7 @@ class BlendingTab(ttk.Frame):
         if not save_path:
             return
 
-        self.status_callback(f"Generating blend: {voice_str}")
+        self.status_callback(t("generating_blend_status", voices=voice_str))
         for item in self.blend_tree.get_children():
             self.blend_tree.item(item, values=(self.blend_tree.item(item, "values")[0], "generating"))
         threading.Thread(
@@ -165,25 +161,25 @@ class BlendingTab(ttk.Frame):
             if len(vals) > 1 and vals[1] == "generating":
                 self.blend_tree.item(item, values=(vals[0],))
         if not ok:
-            messagebox.showerror("Blend Error", f"Could not generate blend:\n{result}")
+            messagebox.showerror(t("blend_error_title"), t("blend_error_msg", error=result))
             return
         try:
             import winsound
             winsound.PlaySound(str(result), winsound.SND_FILENAME | winsound.SND_ASYNC)
         except Exception:
             pass
-        self.status_callback(f"Blend saved: {result}")
-        messagebox.showinfo("Blend Ready", f"Blend audio saved:\n{result}")
+        self.status_callback(t("blend_saved_status", path=result))
+        messagebox.showinfo(t("blend_ready_title"), t("blend_ready_msg", path=result))
 
     def _save_blend_preset(self):
         name = self.preset_name.get().strip()
         if not name:
-            messagebox.showwarning("No Name", "Enter a name for the preset.")
+            messagebox.showwarning(t("no_name_title"), t("no_name_msg"))
             return
         if not self._blend:
-            messagebox.showwarning("No Blend", "Add at least one voice to the blend first.")
+            messagebox.showwarning(t("no_blend_title"), t("no_blend_msg"))
             return
         voice_str = ",".join(self._blend)
         save_preset(name, "Kokoro TTS", voice_str, 1.0, 1.0, "WAV")
-        self.status_callback(f"Blend saved: {name}")
-        messagebox.showinfo("Saved", f"Blend preset '{name}' saved!\nUse it from the Preset menu.")
+        self.status_callback(t("preset_saved", name=name))
+        messagebox.showinfo(t("preset_saved_title"), t("preset_saved_msg", name=name))

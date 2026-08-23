@@ -5,6 +5,7 @@ import ttkbootstrap as ttk
 from engines import create_engine
 from voice_presets import list_presets, get_preset, save_preset, delete_preset
 from utils import Config, ENGINES, WINDOW_SIZE, WINDOW_TITLE
+from ui.i18n import t, set_language, get_language, get_available_languages
 from ui.tts_tab import TTSTab
 from ui.blending_tab import BlendingTab
 from ui.studio_tab import StudioTab
@@ -18,6 +19,7 @@ DARK_THEME = "nord-dark"
 class App:
     def __init__(self):
         self.config = Config()
+        set_language(self.config.ui_language)
 
         self.current_theme = DARK_THEME if self.config.theme == "dark" else LIGHT_THEME
         self.root = ttk.Window(title=WINDOW_TITLE, themename=self.current_theme, size=WINDOW_SIZE, minsize=(800, 600))
@@ -60,10 +62,10 @@ class App:
         self.studio_tab = StudioTab(self.notebook, self.config, self.update_status)
         self.stt_tab = STTTab(self.notebook, self.update_status)
 
-        self.notebook.add(self.tts_tab, text="  \U0001f399 Text to Speech  ")
-        self.notebook.add(self.blending_tab, text="  \U0001f3a4 Voice Blending  ")
-        self.notebook.add(self.studio_tab, text="  \U0001f4d6 Studio  ")
-        self.notebook.add(self.stt_tab, text="  \U0001f3a7 Transcribe  ")
+        self.notebook.add(self.tts_tab, text=f"  \U0001f399 {t('tab_tts')}  ")
+        self.notebook.add(self.blending_tab, text=f"  \U0001f3a4 {t('tab_blending')}  ")
+        self.notebook.add(self.studio_tab, text=f"  \U0001f4d6 {t('tab_studio')}  ")
+        self.notebook.add(self.stt_tab, text=f"  \U0001f3a7 {t('tab_stt')}  ")
 
         self.blending_tab.set_engine(self.engine)
         self.studio_tab.set_engine(self.engine)
@@ -73,7 +75,7 @@ class App:
         frame.grid(row=0, column=0, sticky="ew")
         frame.columnconfigure(1, weight=1)
 
-        ttk.Label(frame, text="Engine:").grid(row=0, column=0, padx=(0, 4), pady=2, sticky="w")
+        ttk.Label(frame, text=t("engine")).grid(row=0, column=0, padx=(0, 4), pady=2, sticky="w")
         self.engine_var = ttk.StringVar(value=self.engine_name)
         engine_menu = ttk.Combobox(
             frame, textvariable=self.engine_var,
@@ -82,7 +84,7 @@ class App:
         engine_menu.grid(row=0, column=1, padx=(0, 12), pady=2, sticky="w")
         self.engine_var.trace_add("write", self._on_engine_changed)
 
-        ttk.Label(frame, text="Preset:").grid(row=0, column=2, padx=(0, 4), pady=2, sticky="w")
+        ttk.Label(frame, text=t("preset")).grid(row=0, column=2, padx=(0, 4), pady=2, sticky="w")
         self.preset_var = ttk.StringVar()
         self.preset_menu = ttk.Combobox(
             frame, textvariable=self.preset_var,
@@ -91,22 +93,34 @@ class App:
         self.preset_menu.grid(row=0, column=3, padx=(0, 4), pady=2, sticky="w")
         self.preset_var.trace_add("write", self._on_preset_selected)
 
-        ttk.Button(frame, text="Save", width=5, command=self._save_preset).grid(
+        ttk.Button(frame, text=t("save"), width=5, command=self._save_preset).grid(
             row=0, column=4, padx=(0, 4), pady=2
         )
-        ttk.Button(frame, text="Delete", width=5, command=self._delete_preset).grid(
+        ttk.Button(frame, text=t("delete"), width=5, command=self._delete_preset).grid(
             row=0, column=5, padx=(0, 12), pady=2
         )
 
-        theme_btn = ttk.Button(frame, text="Toggle Theme", width=12, command=self.toggle_theme, bootstyle="secondary-outline")
-        theme_btn.grid(row=0, column=6, padx=(0, 0), pady=2, sticky="e")
+        ttk.Label(frame, text= t("language")).grid(row=0, column=6, padx=(0, 4), pady=2, sticky="e")
+        self.lang_map = get_available_languages()
+        self.reverse_lang_map = {v: k for k, v in self.lang_map.items()}
+        current_display_lang = self.lang_map.get(self.config.ui_language, "English (US)")
+        self.lang_var = ttk.StringVar(value=current_display_lang)
+        lang_menu = ttk.Combobox(
+            frame, textvariable=self.lang_var,
+            values=list(self.lang_map.values()), state="readonly", width=14,
+        )
+        lang_menu.grid(row=0, column=7, padx=(0, 12), pady=2, sticky="e")
+        self.lang_var.trace_add("write", self._on_language_changed)
+
+        theme_btn = ttk.Button(frame, text=t("toggle_theme"), width=12, command=self.toggle_theme, bootstyle="secondary-outline")
+        theme_btn.grid(row=0, column=8, padx=(0, 0), pady=2, sticky="e")
 
     def _create_status_bar(self):
         frame = ttk.Frame(self.root, padding=(12, 4, 12, 6))
         frame.grid(row=3, column=0, sticky="ew")
         frame.columnconfigure(0, weight=1)
 
-        self.status_var = ttk.StringVar(value="Ready")
+        self.status_var = ttk.StringVar(value=t("ready"))
         self.status_label = ttk.Label(
             frame, textvariable=self.status_var, font=("Segoe UI", 9),
         )
@@ -121,16 +135,28 @@ class App:
             self.engine.unload()
         self._init_engine()
 
+    def _on_language_changed(self, *_args):
+        display_name = self.lang_var.get()
+        lang_code = self.reverse_lang_map.get(display_name, "en-us")
+        if lang_code != self.config.ui_language:
+            self.config.ui_language = lang_code
+            self.config.save()
+            set_language(lang_code)
+            messagebox.showinfo(
+                t("restart_notice_title"),
+                t("restart_notice_msg"),
+            )
+
     def _init_engine(self):
         try:
             self.engine = create_engine(self.engine_name)
             self.engine.load()
             self._create_notebook()
             self._set_engine_on_tabs()
-            self.update_status(f"Engine: {self.engine_name}")
+            self.update_status(t("engine_status", engine=self.engine_name))
         except Exception as e:
             self._create_notebook()
-            self.update_status(f"Error loading engine: {e}")
+            self.update_status(t("error_loading_engine", error=e))
 
     def _set_engine_on_tabs(self):
         if self.engine:
@@ -156,7 +182,7 @@ class App:
     def _save_preset(self):
         name = self.preset_var.get().strip()
         if not name:
-            name = simpledialog.askstring("Save Preset", "Preset name:", parent=self.root)
+            name = simpledialog.askstring(t("save_preset_title"), t("preset_name_prompt"), parent=self.root)
             if not name:
                 return
         engine = self.engine_var.get()
@@ -167,17 +193,17 @@ class App:
         save_preset(name, engine, voice, speed, volume, fmt)
         self._refresh_preset_menu()
         self.preset_var.set(name)
-        self.update_status(f"Preset saved: {name}")
+        self.update_status(t("preset_saved", name=name))
 
     def _delete_preset(self):
         name = self.preset_var.get()
         if not name:
             return
-        if messagebox.askyesno("Delete Preset", f"Delete preset '{name}'?"):
+        if messagebox.askyesno(t("delete_preset_title"), t("delete_preset_confirm", name=name)):
             delete_preset(name)
             self._refresh_preset_menu()
             self.preset_var.set("")
-            self.update_status(f"Preset deleted: {name}")
+            self.update_status(t("preset_deleted", name=name))
 
     def _bind_shortcuts(self):
         self.root.bind("<Control-Return>", lambda e: self.tts_tab._on_generate_clicked())
@@ -196,4 +222,4 @@ class App:
         self.root.destroy()
 
     def run(self):
-        self.root.mainloop()
+        self.root.mainloop()    

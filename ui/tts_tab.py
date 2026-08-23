@@ -9,6 +9,7 @@ import ttkbootstrap as ttk
 from utils import LANGUAGES, OUTPUT_FORMATS, SORTED_LANGUAGES, Config
 from srt_exporter import export_srt
 
+from ui.i18n import t
 
 class TTSTab(ttk.Frame):
     def __init__(self, master, config: Config, status_callback, engine=None, **kwargs):
@@ -91,13 +92,13 @@ class TTSTab(ttk.Frame):
         frame.columnconfigure(1, weight=1)
         frame.columnconfigure(3, weight=1)
 
-        ttk.Label(frame, text="Language:").grid(row=0, column=0, padx=(0, 4), pady=2, sticky="w")
+        ttk.Label(frame, text=t("language")).grid(row=0, column=0, padx=(0, 4), pady=2, sticky="w")
         ttk.Combobox(
             frame, textvariable=self.language_var,
             values=SORTED_LANGUAGES, state="readonly", width=16,
         ).grid(row=0, column=1, padx=(0, 12), pady=2, sticky="ew")
 
-        ttk.Label(frame, text="Voice:").grid(row=0, column=2, padx=(0, 4), pady=2, sticky="w")
+        ttk.Label(frame, text=t("voice")).grid(row=0, column=2, padx=(0, 4), pady=2, sticky="w")
         self.voice_menu = ttk.Combobox(
             frame, textvariable=self.voice_var,
             values=self._get_voices_for_language(self.language_var.get()),
@@ -105,7 +106,7 @@ class TTSTab(ttk.Frame):
         )
         self.voice_menu.grid(row=0, column=3, padx=(0, 12), pady=2, sticky="ew")
 
-        ttk.Label(frame, text="Format:").grid(row=0, column=4, padx=(0, 4), pady=2, sticky="w")
+        ttk.Label(frame, text=t("format")).grid(row=0, column=4, padx=(0, 4), pady=2, sticky="w")
         ttk.Combobox(
             frame, textvariable=self.format_var,
             values=OUTPUT_FORMATS, state="readonly", width=8,
@@ -116,7 +117,7 @@ class TTSTab(ttk.Frame):
         frame.grid(row=1, column=0, sticky="ew")
         frame.columnconfigure(1, weight=1)
 
-        ttk.Label(frame, text="Speed:").grid(row=0, column=0, padx=(0, 6), pady=2, sticky="w")
+        ttk.Label(frame, text=t("speed")).grid(row=0, column=0, padx=(0, 6), pady=2, sticky="w")
         speed_scale = ttk.Scale(
             frame, from_=0.5, to=2.0, variable=self.speed_var,
             orient="horizontal", length=200,
@@ -132,14 +133,14 @@ class TTSTab(ttk.Frame):
         frame = ttk.Frame(self, padding=(12, 0, 12, 2))
         frame.grid(row=2, column=0, sticky="ew")
 
-        ttk.Button(frame, text="\U0001f4c4 Import Text File", command=self._import_text).pack(
+        ttk.Button(frame, text=f"\U0001f4c4 {t('import_text_file')}", command=self._import_text).pack(
             side="left", padx=(0, 12)
         )
 
-        self.ssml_btn = ttk.Button(frame, text="SSML Editor", command=self._open_ssml_editor)
+        self.ssml_btn = ttk.Button(frame, text=t("ssml_editor"), command=self._open_ssml_editor)
         self.ssml_btn.pack(side="left", padx=(0, 12))
 
-        ttk.Checkbutton(frame, text="SSML Mode", variable=self.ssml_mode).pack(side="left", padx=(0, 12))
+        ttk.Checkbutton(frame, text=t("ssml_mode"), variable=self.ssml_mode).pack(side="left", padx=(0, 12))
 
     def _open_ssml_editor(self):
         try:
@@ -183,7 +184,7 @@ class TTSTab(ttk.Frame):
     def _create_count_label(self):
         frame = ttk.Frame(self, padding=(12, 0, 12, 2))
         frame.grid(row=6, column=0, sticky="ew")
-        self.count_var = tk.StringVar(value="Chars: 0  |  Words: 0")
+        self.count_var = tk.StringVar(value=t("chars_words_count", chars=0, words=0))
         count_label = ttk.Label(frame, textvariable=self.count_var, font=("Segoe UI", 9))
         count_label.grid(row=0, column=0, sticky="w")
         self.text_widget.bind("<KeyRelease>", self._update_count)
@@ -193,7 +194,7 @@ class TTSTab(ttk.Frame):
         content = self.text_widget.get("1.0", "end-1c")
         chars = len(content)
         words = len(content.split()) if content.strip() else 0
-        self.count_var.set(f"Chars: {chars}  |  Words: {words}")
+        self.count_var.set(t("chars_words_count", chars=chars, words=words))
 
     def _import_text(self):
         file_path = filedialog.askopenfilename(
@@ -216,12 +217,12 @@ class TTSTab(ttk.Frame):
         frame.grid(row=7, column=0, sticky="ew")
         frame.columnconfigure(1, weight=1)
 
-        self.save_btn = ttk.Button(frame, text="Choose Save Location", command=self.choose_save_location)
+        self.save_btn = ttk.Button(frame, text=t("choose_save_location"), command=self.choose_save_location)
         self.save_btn.grid(row=0, column=0, padx=(0, 8), pady=2, sticky="w")
-        self.save_path_label = ttk.Label(frame, text="No location selected", foreground="#888888")
+        self.save_path_label = ttk.Label(frame, text=t("no_location_selected"), foreground="#888888")
         self.save_path_label.grid(row=0, column=1, padx=(0, 12), pady=2, sticky="w")
 
-        ttk.Label(frame, text="Volume:").grid(row=0, column=2, padx=(0, 4), pady=2, sticky="w")
+        ttk.Label(frame, text=t("volume")).grid(row=0, column=2, padx=(0, 4), pady=2, sticky="w")
         volume_scale = ttk.Scale(
             frame, from_=0.0, to=2.0, variable=self.volume_var,
             orient="horizontal", length=100,
@@ -230,7 +231,7 @@ class TTSTab(ttk.Frame):
         self.volume_label = ttk.Label(frame, text=f"{self.volume_var.get():.1f}x", width=5)
         self.volume_label.grid(row=0, column=4, pady=2, sticky="w")
 
-        ttk.Checkbutton(frame, text="SRT", variable=self.export_srt).grid(
+        ttk.Checkbutton(frame, text=t("srt"), variable=self.export_srt).grid(
             row=0, column=5, padx=(12, 0), pady=2
         )
 
@@ -260,10 +261,10 @@ class TTSTab(ttk.Frame):
         frame.columnconfigure(0, weight=1)
         frame.columnconfigure(1, weight=1)
 
-        self.preview_btn = ttk.Button(frame, text="\u25b6 Preview", command=self._preview_audio)
+        self.preview_btn = ttk.Button(frame, text=f"\u25b6 {t('preview')}", command=self._preview_audio)
         self.preview_btn.grid(row=0, column=0, padx=(0, 6), pady=4, sticky="e")
 
-        self.generate_btn = ttk.Button(frame, text="Generate Audio", command=self._on_generate_clicked)
+        self.generate_btn = ttk.Button(frame, text=t("generate_audio"), command=self._on_generate_clicked)
         self.generate_btn.grid(row=0, column=1, padx=(6, 0), pady=4, sticky="w")
 
         self.progress_bar = ttk.Progressbar(frame, mode="indeterminate", length=200)
@@ -274,14 +275,14 @@ class TTSTab(ttk.Frame):
     def _on_generate_clicked(self):
         text = self.text_widget.get("1.0", "end-1c").strip()
         if not text:
-            messagebox.showwarning("No Text", "Please enter some text to convert to speech.")
+            messagebox.showwarning(t("no_text_title"), t("no_text_msg"))
             return
         if not self.save_path:
-            messagebox.showwarning("No Location", "Please choose a save location first.")
+            messagebox.showwarning(t("no_location_title"), t("no_location_msg"))
             return
         voice = self.voice_var.get()
         if not voice:
-            messagebox.showwarning("No Voice", "No voice available for this engine/language.")
+            messagebox.showwarning(t("no_voice_title"), t("no_voice_msg"))
             return
 
         self.generate_btn.configure(state="disabled")
@@ -297,7 +298,7 @@ class TTSTab(ttk.Frame):
 
     def _generate_thread(self, text: str):
         try:
-            self._update_status("Generating audio...")
+            self._update_status(t("generating_audio"))
             output_path = self.save_path
             ext = output_path.suffix.lower()
             if ext not in (".wav", ".mp3"):
@@ -346,7 +347,7 @@ class TTSTab(ttk.Frame):
     def _preview_audio(self):
         path = self._generated_wav
         if path is None or not path.exists():
-            messagebox.showinfo("No Preview", "Generate audio first, then preview it.")
+            messagebox.showinfo(t("no_preview_title"), t("no_preview_msg"))
             return
         try:
             import winsound
@@ -356,11 +357,11 @@ class TTSTab(ttk.Frame):
 
     def _generation_finished(self):
         self._reset_ui()
-        self._update_status("Finished!")
-        msg = f"Audio saved successfully!\n{self.save_path}"
+        self._update_status(t("finished"))
+        msg = t("audio_saved", path=self.save_path)
         if self.export_srt.get():
-            msg += "\nSRT subtitles exported."
-        messagebox.showinfo("Success", msg)
+            msg += t("srt_exported")
+        messagebox.showinfo(t("success"), msg)
 
     def _generation_error(self, msg: str):
         self._reset_ui()

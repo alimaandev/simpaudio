@@ -7,6 +7,8 @@ import ttkbootstrap as ttk
 
 from whisper_stt import WhisperSTT
 
+from ui.i18n import t
+
 
 class STTTab(ttk.Frame):
     def __init__(self, master, status_callback, **kwargs):
@@ -26,17 +28,17 @@ class STTTab(ttk.Frame):
         self._create_result_section()
 
     def _create_input_section(self):
-        frame = ttk.LabelFrame(self, text="Input Audio", padding=(12, 8, 12, 8))
+        frame = ttk.LabelFrame(self, text=t("input_audio"), padding=(12, 8, 12, 8))
         frame.grid(row=0, column=0, sticky="ew", padx=12, pady=(12, 4))
         frame.columnconfigure(1, weight=1)
 
-        ttk.Button(frame, text="Open Audio File", command=self._open_file).grid(
+        ttk.Button(frame, text=t("open_audio_file"), command=self._open_file).grid(
             row=0, column=0, padx=(0, 8), pady=4, sticky="w"
         )
-        self.file_label = ttk.Label(frame, text="No file selected", foreground="#888888")
+        self.file_label = ttk.Label(frame, text=t("no_file_selected"), foreground="#888888")
         self.file_label.grid(row=0, column=1, padx=(0, 8), pady=4, sticky="w")
 
-        ttk.Label(frame, text="Model:").grid(row=1, column=0, padx=(0, 4), pady=4, sticky="w")
+        ttk.Label(frame, text=t("model")).grid(row=1, column=0, padx=(0, 4), pady=4, sticky="w")
         self.model_var = tk.StringVar(value="base")
         ttk.Combobox(
             frame, textvariable=self.model_var,
@@ -44,15 +46,15 @@ class STTTab(ttk.Frame):
             state="readonly", width=14,
         ).grid(row=1, column=1, padx=(0, 12), pady=4, sticky="w")
 
-        ttk.Label(frame, text="Language:").grid(row=1, column=2, padx=(0, 4), pady=4, sticky="w")
-        self.lang_var = tk.StringVar(value="Auto-detect")
-        lang_options = ["Auto-detect", "en", "es", "fr", "de", "it", "pt", "ja", "zh"]
+        ttk.Label(frame, text=t("language")).grid(row=1, column=2, padx=(0, 4), pady=4, sticky="w")
+        self.lang_var = tk.StringVar(value=t("auto_detect"))
+        lang_options = [t("auto_detect"), "en", "es", "fr", "de", "it", "pt", "ja", "zh"]
         ttk.Combobox(
             frame, textvariable=self.lang_var,
             values=lang_options, state="readonly", width=14,
         ).grid(row=1, column=3, padx=(0, 8), pady=4, sticky="w")
 
-        self.transcribe_btn = ttk.Button(frame, text="Transcribe", command=self._transcribe)
+        self.transcribe_btn = ttk.Button(frame, text=t("transcribe"), command=self._transcribe)
         self.transcribe_btn.grid(row=1, column=4, padx=(0, 8), pady=4, sticky="e")
 
         self.trans_progress = ttk.Progressbar(frame, mode="indeterminate", length=200)
@@ -61,7 +63,7 @@ class STTTab(ttk.Frame):
         ttk.Separator(self, orient="horizontal").grid(row=row, column=0, sticky="ew", padx=12, pady=8)
 
     def _create_result_section(self):
-        frame = ttk.LabelFrame(self, text="Transcription", padding=(12, 8, 12, 8))
+        frame = ttk.LabelFrame(self, text=t("transcription"), padding=(12, 8, 12, 8))
         frame.grid(row=3, column=0, sticky="nsew", padx=12, pady=4)
         frame.columnconfigure(0, weight=1)
         frame.rowconfigure(0, weight=1)
@@ -78,13 +80,13 @@ class STTTab(ttk.Frame):
 
         btn_frame = ttk.Frame(frame)
         btn_frame.grid(row=1, column=0, columnspan=2, sticky="ew", pady=(8, 0))
-        ttk.Button(btn_frame, text="Copy All", command=self._copy).pack(side="left", padx=(0, 8))
-        ttk.Button(btn_frame, text="Save as TXT", command=self._save_txt).pack(side="left", padx=(0, 8))
-        ttk.Button(btn_frame, text="Save as SRT", command=self._save_srt).pack(side="left")
+        ttk.Button(btn_frame, text=t("copy_all"), command=self._copy).pack(side="left", padx=(0, 8))
+        ttk.Button(btn_frame, text=t("save_as_txt"), command=self._save_txt).pack(side="left", padx=(0, 8))
+        ttk.Button(btn_frame, text=t("save_as_srt"), command=self._save_srt).pack(side="left")
 
     def _open_file(self):
         path = filedialog.askopenfilename(
-            title="Select Audio File",
+            title=t("select_audio_file_title"),
             filetypes=[("Audio files", "*.wav *.mp3 *.m4a *.flac *.ogg"), ("All files", "*.*")],
         )
         if path:
@@ -97,11 +99,11 @@ class STTTab(ttk.Frame):
 
     def _transcribe(self):
         if self._audio_path is None or not self._audio_path.exists():
-            messagebox.showwarning("No File", "Please select an audio file first.")
+            messagebox.showwarning(t("no_file_title"), t("no_file_msg"))
             return
 
         lang = self.lang_var.get()
-        if lang == "Auto-detect":
+        if lang in ("Auto-detect", t("auto_detect")):
             lang = None
 
         model_name = self.model_var.get()
@@ -110,7 +112,7 @@ class STTTab(ttk.Frame):
         self.transcribe_btn.configure(state="disabled")
         self.trans_progress.grid(row=0, column=5, pady=4, padx=(0, 4))
         self.trans_progress.start(15)
-        self.status_callback("Transcribing...")
+        self.status_callback(t("transcribing_status"))
 
         Thread(target=self._transcribe_thread, args=(lang,), daemon=True).start()
 
@@ -138,21 +140,21 @@ class STTTab(ttk.Frame):
         self.result_text.delete("1.0", "end")
         self.result_text.insert("1.0", text)
         self.result_text.configure(state="disabled")
-        self.status_callback("Transcription complete")
+        self.status_callback(t("transcription_complete_status"))
 
     def _error(self, msg: str):
         self.trans_progress.stop()
         self.trans_progress.grid_remove()
         self.transcribe_btn.configure(state="normal")
         self.status_callback("Error")
-        messagebox.showerror("Transcription Error", f"Failed to transcribe:\n{msg}")
+        messagebox.showerror(t("transcription_error_title"), t("transcription_error_msg", error=msg))
 
     def _copy(self):
         text = self.result_text.get("1.0", "end-1c")
         if text:
             self.clipboard_clear()
             self.clipboard_append(text)
-            self.status_callback("Copied to clipboard")
+            self.status_callback(t("copied_status"))
 
     def _save_txt(self):
         text = self.result_text.get("1.0", "end-1c")
@@ -165,7 +167,7 @@ class STTTab(ttk.Frame):
         )
         if path:
             Path(path).write_text(text, encoding="utf-8")
-            self.status_callback(f"Saved: {path}")
+            self.status_callback(t("saved_status", path=path))
 
     def _save_srt(self):
         text = self.result_text.get("1.0", "end-1c")

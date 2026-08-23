@@ -1,3 +1,15 @@
+"""
+Utility functions, global path settings, TTS model catalog, and user configuration persistence.
+
+Note for Developers:
+-------------------
+Do not confuse the application UI Localization (`ui/i18n.py`) with the TTS Synthesis
+Language definitions (`LANGUAGES` dictionary in `utils.py`)
+
+- `ui/i18n.py`: Controls the display language of buttons, labels, and dialogs in Simpaudio UI.
+- `utils.py LANGUAGES`: Maps audio synthesis engines (Piper, Kokoro) to their supported model voices.
+"""
+
 import json
 from pathlib import Path
 
@@ -77,6 +89,7 @@ KOKORO_TO_LANG = {
 
 class Config:
     def __init__(self):
+        self.ui_language: str = "en-us"
         self.last_language: str = SORTED_LANGUAGES[0]
         self.last_voice: str = ""
         self.last_folder: str = str(Path.home() / "Desktop")
@@ -91,6 +104,7 @@ class Config:
     def load(self):
         try:
             data = json.loads(SETTINGS_FILE.read_text(encoding="utf-8"))
+            self.ui_language = data.get("ui_language", self.ui_language)
             self.last_language = data.get("last_language", self.last_language)
             self.last_voice = data.get("last_voice", self.last_voice)
             self.last_folder = data.get("last_folder", self.last_folder)
@@ -107,6 +121,7 @@ class Config:
         try:
             SETTINGS_FILE.write_text(
                 json.dumps({
+                    "ui_language": self.ui_language,
                     "last_language": self.last_language,
                     "last_voice": self.last_voice,
                     "last_folder": self.last_folder,

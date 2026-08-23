@@ -5,12 +5,14 @@ import ttkbootstrap as ttk
 
 from ssml_parser import SSMLNode, ssml_to_tree
 
+from ui.i18n import t
+
 
 class SSMLEditor(tk.Toplevel):
     def __init__(self, parent, initial_text="", callback=None):
         super().__init__(parent)
         self.callback = callback
-        self.title("SSML Editor")
+        self.title(t("ssml_editor_title"))
         self.geometry("700x550")
         self.minsize(500, 400)
 
@@ -18,7 +20,7 @@ class SSMLEditor(tk.Toplevel):
         self.grab_set()
 
         self.root_node = SSMLNode("root")
-        self.root_node.children.append(SSMLNode("text", initial_text or "Enter text here..."))
+        self.root_node.children.append(SSMLNode("text", initial_text or t("enter_text_here")))
 
         self._build_ui()
         self._refresh_tree()
@@ -39,26 +41,26 @@ class SSMLEditor(tk.Toplevel):
         frame = ttk.Frame(self, padding=(8, 4))
         frame.grid(row=0, column=0, sticky="ew")
 
-        ttk.Label(frame, text="Insert:").pack(side="left", padx=(0, 4))
-        ttk.Button(frame, text="Text", command=lambda: self._insert_node("text")).pack(side="left", padx=2)
-        ttk.Button(frame, text="Break", command=lambda: self._insert_node("break")).pack(side="left", padx=2)
-        ttk.Button(frame, text="Prosody", command=lambda: self._insert_node("prosody")).pack(side="left", padx=2)
-        ttk.Button(frame, text="Emphasis", command=lambda: self._insert_node("emphasis")).pack(side="left", padx=2)
-        ttk.Button(frame, text="Say-as", command=lambda: self._insert_node("say-as")).pack(side="left", padx=2)
-        ttk.Button(frame, text="Paragraph", command=lambda: self._insert_node("p")).pack(side="left", padx=2)
+        ttk.Label(frame, text=t("insert")).pack(side="left", padx=(0, 4))
+        ttk.Button(frame, text=t("tag_text"), command=lambda: self._insert_node("text")).pack(side="left", padx=2)
+        ttk.Button(frame, text=t("tag_break"), command=lambda: self._insert_node("break")).pack(side="left", padx=2)
+        ttk.Button(frame, text=t("tag_prosody"), command=lambda: self._insert_node("prosody")).pack(side="left", padx=2)
+        ttk.Button(frame, text=t("tag_emphasis"), command=lambda: self._insert_node("emphasis")).pack(side="left", padx=2)
+        ttk.Button(frame, text=t("tag_say_as"), command=lambda: self._insert_node("say-as")).pack(side="left", padx=2)
+        ttk.Button(frame, text=t("tag_paragraph"), command=lambda: self._insert_node("p")).pack(side="left", padx=2)
         ttk.Separator(frame, orient="vertical").pack(side="left", padx=8, fill="y")
-        ttk.Button(frame, text="Delete", command=self._delete_selected).pack(side="left", padx=2)
+        ttk.Button(frame, text=t("delete"), command=self._delete_selected).pack(side="left", padx=2)
 
     def _create_tree_area(self):
-        frame = ttk.LabelFrame(self, text="SSML Tree", padding=(4, 4))
+        frame = ttk.LabelFrame(self, text=t("ssml_tree"), padding=(4, 4))
         frame.grid(row=1, column=0, sticky="nsew", padx=8, pady=(0, 4))
         frame.columnconfigure(0, weight=1)
         frame.rowconfigure(0, weight=1)
 
         self.tree = ttk.Treeview(frame, columns=("type", "detail"), show="tree headings", height=12)
-        self.tree.heading("#0", text="Node")
-        self.tree.heading("type", text="Type")
-        self.tree.heading("detail", text="Detail")
+        self.tree.heading("#0", text=t("tree_node"))
+        self.tree.heading("type", text=t("tree_type"))
+        self.tree.heading("detail", text=t("tree_detail"))
         self.tree.column("#0", width=30)
         self.tree.column("type", width=80)
         self.tree.column("detail", width=450)
@@ -70,16 +72,14 @@ class SSMLEditor(tk.Toplevel):
         scrollbar.grid(row=0, column=1, sticky="ns")
 
     def _create_properties_area(self):
-        frame = ttk.LabelFrame(self, text="Properties", padding=(8, 4))
+        frame = ttk.LabelFrame(self, text=t("properties"), padding=(8, 4))
         frame.grid(row=2, column=0, sticky="ew", padx=8, pady=(0, 8))
         frame.columnconfigure(1, weight=1)
 
         self.props_frame = frame
-        self._props_widgets = []
 
-        ttk.Label(frame, text="Select a node to edit properties.").grid(
-            row=0, column=0, columnspan=2, pady=4
-        )
+        self._props_widgets = []
+        ttk.Label(frame, text=t("select_node_properties")).grid(row=0, column=0, columnspan=2, pady=4)
 
         self._create_action_buttons(frame)
 
@@ -89,10 +89,10 @@ class SSMLEditor(tk.Toplevel):
         btn_frame.columnconfigure(0, weight=1)
         btn_frame.columnconfigure(1, weight=1)
 
-        ttk.Button(btn_frame, text="Save & Close", command=self._save_and_close).grid(
+        ttk.Button(btn_frame, text=t("save_and_close"), command=self._save_and_close).grid(
             row=0, column=0, padx=(0, 4), sticky="e"
         )
-        ttk.Button(btn_frame, text="Cancel", command=self._on_close).grid(
+        ttk.Button(btn_frame, text=t("cancel"), command=self._on_close).grid(
             row=0, column=1, padx=(4, 0), sticky="w"
         )
 
@@ -160,7 +160,7 @@ class SSMLEditor(tk.Toplevel):
 
         row = 0
         if node.tag == "text":
-            tk.Label(self.props_frame, text="Text:").grid(row=row, column=0, padx=(0, 4), pady=2, sticky="w")
+            tk.Label(self.props_frame, text=t("text_label")).grid(row=row, column=0, padx=(0, 4), pady=2, sticky="w")
             var = tk.StringVar(value=node.text or "")
             entry = ttk.Entry(self.props_frame, textvariable=var, width=50)
             entry.grid(row=row, column=1, pady=2, sticky="ew")
@@ -171,7 +171,7 @@ class SSMLEditor(tk.Toplevel):
             self._props_widgets.extend([entry])
 
         elif node.tag == "break":
-            tk.Label(self.props_frame, text="Time (e.g. 500ms, 1s):").grid(
+            tk.Label(self.props_frame, text=t("time_label")).grid(
                 row=row, column=0, padx=(0, 4), pady=2, sticky="w"
             )
             var = tk.StringVar(value=node.attrs.get("time", "500ms"))
@@ -184,7 +184,7 @@ class SSMLEditor(tk.Toplevel):
             self._props_widgets.append(entry)
 
         elif node.tag == "prosody":
-            fields = [("Rate (0.5-2.0)", "rate"), ("Pitch (0.5-2.0)", "pitch"), ("Volume (0-2.0)", "volume")]
+            fields = [(t("rate_label"), "rate"), (t("pitch_label"), "pitch"), (t("volume_label"), "volume")]
             for label, key in fields:
                 tk.Label(self.props_frame, text=label+":").grid(
                     row=row, column=0, padx=(0, 4), pady=2, sticky="w"
@@ -200,9 +200,7 @@ class SSMLEditor(tk.Toplevel):
                 row += 1
 
         elif node.tag == "emphasis":
-            tk.Label(self.props_frame, text="Level:").grid(
-                row=row, column=0, padx=(0, 4), pady=2, sticky="w"
-            )
+            tk.Label(self.props_frame, text=t("level_label")).grid(row=row, column=0, padx=(0, 4), pady=2, sticky="w")
             var = tk.StringVar(value=node.attrs.get("level", "strong"))
             combo = ttk.Combobox(self.props_frame, textvariable=var,
                                  values=["strong", "moderate", "reduced"], state="readonly", width=16)
@@ -214,7 +212,7 @@ class SSMLEditor(tk.Toplevel):
             self._props_widgets.append(combo)
 
         elif node.tag == "say-as":
-            tk.Label(self.props_frame, text="Interpret as:").grid(
+            tk.Label(self.props_frame, text=t("interpret_as_label")).grid(
                 row=row, column=0, padx=(0, 4), pady=2, sticky="w"
             )
             var = tk.StringVar(value=node.attrs.get("interpret-as", "characters"))

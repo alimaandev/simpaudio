@@ -8,6 +8,8 @@ import ttkbootstrap as ttk
 
 from utils import Config, LANGUAGES, OUTPUT_FORMATS, SORTED_LANGUAGES
 
+from ui.i18n import t
+
 
 def _extract_chapters(file_path: Path) -> List[dict]:
     ext = file_path.suffix.lower()
@@ -129,22 +131,22 @@ class StudioTab(ttk.Frame):
         self._create_output_section()
 
     def _create_import_section(self):
-        frame = ttk.LabelFrame(self, text="Import Manuscript", padding=(12, 8, 12, 8))
+        frame = ttk.LabelFrame(self, text=t("import_manuscript"), padding=(12, 8, 12, 8))
         frame.grid(row=0, column=0, sticky="ew", padx=12, pady=(12, 4))
         frame.columnconfigure(1, weight=1)
 
-        self.import_btn = ttk.Button(frame, text="Import File", command=self._import_file)
+        self.import_btn = ttk.Button(frame, text=t("import_file"), command=self._import_file)
         self.import_btn.grid(row=0, column=0, padx=(0, 8), pady=4, sticky="w")
-        self.source_label = ttk.Label(frame, text="No file loaded", foreground="#888888")
+        self.source_label = ttk.Label(frame, text=t("no_file_loaded"), foreground="#888888")
         self.source_label.grid(row=0, column=1, padx=(0, 8), pady=4, sticky="w")
 
-        ttk.Label(frame, text="Default Voice:").grid(row=1, column=0, padx=(0, 4), pady=4, sticky="w")
+        ttk.Label(frame, text=t("default_voice")).grid(row=1, column=0, padx=(0, 4), pady=4, sticky="w")
         self.default_voice = tk.StringVar()
         self.voice_menu = ttk.Combobox(frame, textvariable=self.default_voice, state="readonly", width=26)
         self.voice_menu.grid(row=1, column=1, padx=(0, 8), pady=4, sticky="w")
 
     def _create_chapter_section(self):
-        frame = ttk.LabelFrame(self, text="Chapters", padding=(12, 8, 12, 8))
+        frame = ttk.LabelFrame(self, text=t("chapters"), padding=(12, 8, 12, 8))
         frame.grid(row=2, column=0, sticky="nsew", padx=12, pady=4)
         frame.columnconfigure(0, weight=1)
         frame.rowconfigure(0, weight=1)
@@ -152,9 +154,9 @@ class StudioTab(ttk.Frame):
         columns = ("num", "title", "voice", "words")
         self.chapter_tree = ttk.Treeview(frame, columns=columns, show="headings", height=8)
         self.chapter_tree.heading("num", text="#")
-        self.chapter_tree.heading("title", text="Chapter")
-        self.chapter_tree.heading("voice", text="Voice")
-        self.chapter_tree.heading("words", text="Words")
+        self.chapter_tree.heading("title", text=t("chapter_heading"))
+        self.chapter_tree.heading("voice", text=t("voice").rstrip(":"))
+        self.chapter_tree.heading("words", text=t("words_heading"))
         self.chapter_tree.column("num", width=40)
         self.chapter_tree.column("title", width=300)
         self.chapter_tree.column("voice", width=180)
@@ -167,37 +169,37 @@ class StudioTab(ttk.Frame):
 
         btn_frame = ttk.Frame(frame)
         btn_frame.grid(row=1, column=0, columnspan=2, sticky="ew", pady=(8, 0))
-        ttk.Button(btn_frame, text="Assign Voice", command=self._assign_voice).pack(side="left", padx=(0, 8))
+        ttk.Button(btn_frame, text=t("assign_voice"), command=self._assign_voice).pack(side="left", padx=(0, 8))
 
     def _create_output_section(self):
         frame = ttk.Frame(self, padding=(12, 4, 12, 12))
         frame.grid(row=3, column=0, sticky="ew")
         frame.columnconfigure(1, weight=1)
 
-        ttk.Label(frame, text="Output Folder:").grid(row=0, column=0, padx=(0, 4), pady=4, sticky="w")
+        ttk.Label(frame, text=t("output_folder")).grid(row=0, column=0, padx=(0, 4), pady=4, sticky="w")
         self.output_dir_var = tk.StringVar()
         ttk.Entry(frame, textvariable=self.output_dir_var, width=50).grid(
             row=0, column=1, padx=(0, 8), pady=4, sticky="ew"
         )
-        ttk.Button(frame, text="Browse", command=self._browse_output).grid(row=0, column=2, pady=4)
+        ttk.Button(frame, text=t("browse"), command=self._browse_output).grid(row=0, column=2, pady=4)
 
-        ttk.Label(frame, text="Format:").grid(row=1, column=0, padx=(0, 4), pady=4, sticky="w")
+        ttk.Label(frame, text=t("format")).grid(row=1, column=0, padx=(0, 4), pady=4, sticky="w")
         self.fmt_var = tk.StringVar(value="WAV")
         ttk.Combobox(frame, textvariable=self.fmt_var, values=["WAV", "MP3"], state="readonly", width=8).grid(
             row=1, column=1, padx=(0, 8), pady=4, sticky="w"
         )
 
         self.srt_var = tk.BooleanVar(value=True)
-        ttk.Checkbutton(frame, text="SRT per chapter", variable=self.srt_var).grid(
+        ttk.Checkbutton(frame, text=t("srt_per_chapter"), variable=self.srt_var).grid(
             row=1, column=2, padx=(0, 8), pady=4, sticky="w"
         )
 
         self.concat_var = tk.BooleanVar(value=True)
-        ttk.Checkbutton(frame, text="Concatenate", variable=self.concat_var).grid(
+        ttk.Checkbutton(frame, text=t("concatenate"), variable=self.concat_var).grid(
             row=1, column=3, padx=(0, 8), pady=4, sticky="w"
         )
 
-        self.generate_btn = ttk.Button(frame, text="Generate Audiobook", command=self._generate)
+        self.generate_btn = ttk.Button(frame, text=t("generate_audiobook"), command=self._generate)
         self.generate_btn.grid(row=2, column=0, pady=8, sticky="w")
 
         self.progress = ttk.Progressbar(frame, mode="determinate", length=400)
@@ -216,7 +218,7 @@ class StudioTab(ttk.Frame):
 
     def _import_file(self):
         path = filedialog.askopenfilename(
-            title="Import Manuscript",
+            title=t("import_manuscript_title"),
             filetypes=[
                 ("All supported", "*.txt *.md *.epub *.pdf"),
                 ("Text files", "*.txt"),
@@ -234,11 +236,11 @@ class StudioTab(ttk.Frame):
         try:
             self._chapters = _extract_chapters(self._source_path)
         except Exception as e:
-            messagebox.showerror("Import Error", str(e))
+            messagebox.showerror(t("import_error_title"), str(e))
             return
 
         self._refresh_chapters()
-        self.status_callback(f"Loaded {len(self._chapters)} chapters from {path}")
+        self.status_callback(t("loaded_chapters_status", count=len(self._chapters), path=path))
 
     def _refresh_chapters(self):
         for item in self.chapter_tree.get_children():
@@ -254,7 +256,7 @@ class StudioTab(ttk.Frame):
     def _assign_voice(self):
         selected = self.chapter_tree.selection()
         if not selected:
-            messagebox.showinfo("No Selection", "Select a chapter to assign a voice.")
+            messagebox.showinfo(t("no_selection_title"), t("no_selection_msg"))
             return
         voice = self.default_voice.get()
         if not voice:
@@ -265,20 +267,20 @@ class StudioTab(ttk.Frame):
         self._refresh_chapters()
 
     def _browse_output(self):
-        path = filedialog.askdirectory(title="Select Output Folder")
+        path = filedialog.askdirectory(title=t("select_output_folder_title"))
         if path:
             self.output_dir_var.set(path)
 
     def _generate(self):
         if not self._chapters:
-            messagebox.showwarning("No Chapters", "Import a manuscript first.")
+            messagebox.showwarning(t("no_chapters_title"), t("no_chapters_msg"))
             return
         if self.engine is None:
-            messagebox.showwarning("No Engine", "Select an engine from the toolbar first.")
+            messagebox.showwarning(t("no_engine_title"), t("no_engine_msg"))
             return
         output_dir = self.output_dir_var.get().strip()
         if not output_dir:
-            messagebox.showwarning("No Output", "Select an output folder.")
+            messagebox.showwarning(t("no_output_title"), t("no_output_msg"))
             return
 
         self._generating = True
@@ -312,7 +314,7 @@ class StudioTab(ttk.Frame):
             out_path = output_dir / f"chapter_{i+1:03d}{ext}"
             try:
                 self.after(0, lambda idx=i, title=ch["title"]: self.progress_label.configure(
-                    text=f"Chapter {idx+1}: {title[:40]}"
+                    text=t("chapter_progress", num=idx+1, title=title[:40])
                 ))
                 self.engine.generate(
                     text=text, voice=voice,
@@ -362,11 +364,11 @@ class StudioTab(ttk.Frame):
             combined.export(str(combined_path), format=ext.lstrip("."), bitrate="192k")
             self.status_callback(f"Concatenated: {combined_path.name}")
         except Exception as e:
-            self.after(0, lambda: messagebox.showerror("Concat Error", str(e)))
+            self.after(0, lambda: messagebox.showerror(t("concat_error_title"), str(e)))
 
     def _generation_done(self):
         self._generating = False
         self.generate_btn.configure(state="normal")
-        self.progress_label.configure(text="Complete!")
-        self.status_callback("Audiobook generation finished!")
-        messagebox.showinfo("Complete", f"Generated {len(self._chapters)} chapters.\nOutput: {self.output_dir_var.get()}")
+        self.progress_label.configure(text=t("complete"))
+        self.status_callback(t("audiobook_finished_status"))
+        messagebox.showinfo(t("complete"), t("audiobook_complete_msg", count=len(self._chapters), path=self.output_dir_var.get()))
